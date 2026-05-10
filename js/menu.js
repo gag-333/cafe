@@ -1,19 +1,11 @@
-/* =====================================================
-   menu.js – Menu page logic
-   ===================================================== */
-
 let allItems = [];
 let currentCategory = 'all';
 let searchQuery = '';
 
-// Load all menu items
 async function loadMenuItems() {
     try {
-        const res = await fetch(`${API_BASE}/api/menu`);
-        const data = await res.json();
-
+        const data = MockAPI.getMenu();
         if (!data.success) throw new Error(data.message);
-
         allItems = data.data;
         renderMenu();
     } catch (err) {
@@ -22,12 +14,11 @@ async function loadMenuItems() {
       <div class="empty-state" style="grid-column:1/-1;">
         <div class="empty-state-icon">⚠️</div>
         <h3>Could not load menu</h3>
-        <p>Make sure the server is running.</p>
+        <p>Something went wrong loading the menu items.</p>
       </div>`;
     }
 }
 
-// Set category filter
 function setCategory(cat, btn) {
     currentCategory = cat;
     document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
@@ -35,13 +26,11 @@ function setCategory(cat, btn) {
     renderMenu();
 }
 
-// Search handler
 function filterItems() {
     searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
     renderMenu();
 }
 
-// Render filtered menu
 function renderMenu() {
     const grid = document.getElementById('menuGrid');
     const countEl = document.getElementById('menuCount');
@@ -79,7 +68,6 @@ function renderMenu() {
 
     grid.innerHTML = filtered.map(item => buildMenuCard(item)).join('');
 
-    // Re-observe for animations
     grid.querySelectorAll('.menu-card').forEach((card, i) => {
         card.style.opacity = '0';
         card.style.transform = 'translateY(20px)';
@@ -129,5 +117,4 @@ function buildMenuCard(item) {
     </div>`;
 }
 
-// Init
 document.addEventListener('DOMContentLoaded', loadMenuItems);

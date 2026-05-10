@@ -482,15 +482,15 @@
 
   <!-- Navbar -->
   <nav class="navbar" id="navbar">
-    <a href="/" class="nav-logo">
+    <a href="/index.html" class="nav-logo">
       <div class="nav-logo-icon">☕</div>
       Web<span>Cafe</span>
     </a>
     <ul class="nav-links" id="navLinks">
-      <li><a href="/" class="active">Home</a></li>
-      <li><a href="/menu">Menu</a></li>
-      <li><a href="/about">About</a></li>
-      <li><a href="/contact">Contact</a></li>
+      <li><a href="/index.html" class="active">Home</a></li>
+      <li><a href="/menu.html">Menu</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/contact.html">Contact</a></li>
 
     </ul>
     <div class="nav-cart" onclick="toggleCart()">
@@ -519,8 +519,8 @@
           artisan cheesecakes — we pour our heart into every cup.
         </p>
         <div class="hero-actions">
-          <a href="/menu" class="btn btn-primary btn-lg">Explore Menu ☕</a>
-          <a href="/about" class="btn btn-outline btn-lg">Our Story</a>
+          <a href="/menu.html" class="btn btn-primary btn-lg">Explore Menu ☕</a>
+          <a href="/about.html" class="btn btn-outline btn-lg">Our Story</a>
         </div>
         <div class="hero-stats">
           <div class="stat-item">
@@ -610,7 +610,7 @@
         </div>
       </div>
       <div class="text-center mt-5">
-        <a href="/menu" class="btn btn-primary btn-lg">View Full Menu →</a>
+        <a href="/menu.html" class="btn btn-primary btn-lg">View Full Menu →</a>
       </div>
     </div>
   </section>
@@ -670,8 +670,8 @@
       <h2 class="cta-title">Start Your <span style="color:var(--primary-light)">Coffee Journey</span> Today</h2>
       <p class="cta-desc">Browse our full menu and discover your new favourite brew. We can't wait to serve you.</p>
       <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-        <a href="/menu" class="btn btn-primary btn-lg">Browse Menu ☕</a>
-        <a href="/contact" class="btn btn-outline btn-lg">Contact Us</a>
+        <a href="/menu.html" class="btn btn-primary btn-lg">Browse Menu ☕</a>
+        <a href="/contact.html" class="btn btn-outline btn-lg">Contact Us</a>
       </div>
     </div>
   </section>
@@ -680,7 +680,7 @@
   <footer>
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="/" class="nav-logo" style="margin-bottom:0.5rem;">
+        <a href="/index.html" class="nav-logo" style="margin-bottom:0.5rem;">
           <div class="nav-logo-icon">☕</div>
           Web<span>Cafe</span>
         </a>
@@ -696,19 +696,19 @@
       <div class="footer-col">
         <h4>Pages</h4>
         <ul class="footer-links">
-          <li><a href="/">Home</a></li>
-          <li><a href="/menu">Menu</a></li>
-          <li><a href="/about">About Us</a></li>
-          <li><a href="/contact">Contact</a></li>
+          <li><a href="/index.html">Home</a></li>
+          <li><a href="/menu.html">Menu</a></li>
+          <li><a href="/about.html">About Us</a></li>
+          <li><a href="/contact.html">Contact</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Menu</h4>
         <ul class="footer-links">
-          <li><a href="/menu">Coffee</a></li>
-          <li><a href="/menu">Desserts</a></li>
-          <li><a href="/menu">Drinks</a></li>
-          <li><a href="/menu">Snacks</a></li>
+          <li><a href="/menu.html">Coffee</a></li>
+          <li><a href="/menu.html">Desserts</a></li>
+          <li><a href="/menu.html">Drinks</a></li>
+          <li><a href="/menu.html">Snacks</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -731,21 +731,16 @@
   <script src="js/main.js"></script>
   <script src="js/cart.js"></script>
   <script>
-    // Load featured menu items
-    async function loadFeatured() {
-      try {
-        const res = await fetch('/api/menu');
-        const data = await res.json();
-        const container = document.getElementById('featuredItems');
-        if (!data.success || data.data.length === 0) {
-          container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">☕</div><p>Menu coming soon!</p></div>';
-          return;
-        }
-        const items = data.data.slice(0, 4);
-        container.innerHTML = items.map(item => createMenuCard(item)).join('');
-      } catch (e) {
-        console.error(e);
+    // Load featured menu items from static data
+    function loadFeatured() {
+      const data = MockAPI.getMenu();
+      const container = document.getElementById('featuredItems');
+      if (!data.success || data.data.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">☕</div><p>Menu coming soon!</p></div>';
+        return;
       }
+      const items = data.data.slice(0, 4);
+      container.innerHTML = items.map(item => createMenuCard(item)).join('');
     }
 
     function createMenuCard(item) {

@@ -286,14 +286,14 @@
 
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
-        <a href="/" class="nav-logo">
+        <a href="/index.html" class="nav-logo">
             <div class="nav-logo-icon">☕</div>Web<span>Cafe</span>
         </a>
         <ul class="nav-links" id="navLinks">
-            <li><a href="/">Home</a></li>
-            <li><a href="/menu">Menu</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/contact" class="active">Contact</a></li>
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/menu.html">Menu</a></li>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="/contact.html" class="active">Contact</a></li>
         </ul>
         <div class="nav-cart" onclick="toggleCart()">
             🛒 <span class="cart-badge" id="cartBadge">0</span>
@@ -451,7 +451,7 @@
     <footer>
         <div class="footer-grid">
             <div class="footer-brand">
-                <a href="/" class="nav-logo">
+                <a href="/index.html" class="nav-logo">
                     <div class="nav-logo-icon">☕</div>Web<span>Cafe</span>
                 </a>
                 <p>Quality coffee, artisan desserts, and a warm welcome await you.</p>
@@ -464,19 +464,19 @@
             <div class="footer-col">
                 <h4>Pages</h4>
                 <ul class="footer-links">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/menu">Menu</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/menu.html">Menu</a></li>
+                    <li><a href="/about.html">About</a></li>
+                    <li><a href="/contact.html">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>Menu</h4>
                 <ul class="footer-links">
-                    <li><a href="/menu">Coffee</a></li>
-                    <li><a href="/menu">Desserts</a></li>
-                    <li><a href="/menu">Drinks</a></li>
-                    <li><a href="/menu">Snacks</a></li>
+                    <li><a href="/menu.html">Coffee</a></li>
+                    <li><a href="/menu.html">Desserts</a></li>
+                    <li><a href="/menu.html">Drinks</a></li>
+                    <li><a href="/menu.html">Snacks</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -510,21 +510,13 @@
             text.textContent = 'Sending...';
 
             try {
-                const res = await fetch(`${API_BASE}/api/contact`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, message })
-                });
-                const data = await res.json();
-
-                if (data.success) {
+                // Mock API delay
+                setTimeout(() => {
                     document.getElementById('formContent').style.display = 'none';
                     document.getElementById('formSuccess').style.display = 'block';
-                } else {
-                    showToast(data.message || 'Failed to send message.', 'error');
                     btn.disabled = false;
                     text.textContent = 'Send Message ✉️';
-                }
+                }, 800);
             } catch (err) {
                 showToast('Network error. Please try again.', 'error');
                 btn.disabled = false;

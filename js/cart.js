@@ -137,7 +137,7 @@ function renderCartItems() {
             <div class="cart-empty">
                 <div class="cart-empty-icon">🛒</div>
                 <p>Your cart is empty</p>
-                <button class="btn btn-outline btn-sm" onclick="toggleCart(); window.location.href='/menu'">Browse Menu</button>
+                <button class="btn btn-outline btn-sm" onclick="toggleCart(); window.location.href='/menu.html'">Browse Menu</button>
             </div>
         `;
         totalAmount.textContent = '$0.00';

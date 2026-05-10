@@ -1,12 +1,7 @@
-/* =====================================================
-   admin.js – Admin panel logic
-   ===================================================== */
-
 let menuItems = [];
 let editingId = null;
 let deletingId = null;
 
-// ── Initialize on page load ──
 document.addEventListener('DOMContentLoaded', () => {
     if (isLoggedIn()) {
         showDashboard();
@@ -16,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// ── Auth: Login ──
 async function handleLogin(e) {
     e.preventDefault();
     const email = document.getElementById('loginEmail').value.trim();
@@ -27,46 +21,32 @@ async function handleLogin(e) {
     btn.disabled = true;
     text.textContent = 'Signing in...';
 
-    try {
-        const res = await fetch(`${API_BASE}/api/auth/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        });
-        const data = await res.json();
+    const data = MockAPI.login(email, password);
 
-        if (data.success) {
-            setToken(data.token);
-            setUser(data.user);
-            showToast('Welcome back, ' + data.user.name + '! ☕', 'success');
-            showDashboard();
-            loadDashboardData();
-        } else {
-            showToast(data.message || 'Invalid credentials.', 'error');
-            btn.disabled = false;
-            text.textContent = 'Sign In →';
-        }
-    } catch (err) {
-        showToast('Server error. Is the server running?', 'error');
+    if (data.success) {
+        setToken(data.token);
+        setUser(data.user);
+        showToast('Welcome back, ' + data.user.name + '! ☕', 'success');
+        showDashboard();
+        loadDashboardData();
+    } else {
+        showToast(data.message || 'Invalid credentials.', 'error');
         btn.disabled = false;
         text.textContent = 'Sign In →';
     }
 }
 
-// ── Auth: Logout ──
 function handleLogout() {
     removeToken();
     showToast('Logged out successfully.', 'info');
     setTimeout(showLogin, 600);
 }
 
-// ── Show Login ──
 function showLogin() {
     document.getElementById('loginPage').style.display = 'flex';
     document.getElementById('dashboardPage').style.display = 'none';
 }
 
-// ── Show Dashboard ──
 function showDashboard() {
     document.getElementById('loginPage').style.display = 'none';
     document.getElementById('dashboardPage').style.display = 'block';
@@ -78,31 +58,22 @@ function showDashboard() {
     }
 }
 
-// ── Load Dashboard Data ──
 async function loadDashboardData() {
-    await Promise.all([loadStats(), loadMenuItems()]);
+    loadStats();
+    loadMenuItems();
 }
 
-// ── Load Stats ──
-async function loadStats() {
-    try {
-        const res = await authFetch(`${API_BASE}/api/admin/stats`);
-        if (res.status === 401) { handleLogout(); return; }
-        const data = await res.json();
-
-        if (data.success) {
-            const { totalMenuItems, availableItems, categoryCounts, totalUsers } = data.stats;
-            animateCounter('statTotal', totalMenuItems);
-            animateCounter('statAvailable', availableItems);
-            animateCounter('statCategories', categoryCounts.length);
-            animateCounter('statUsers', totalUsers);
-        }
-    } catch (err) {
-        console.error('Could not load stats:', err);
+function loadStats() {
+    const data = MockAPI.getStats();
+    if (data.success) {
+        const { totalMenuItems, availableItems, categoryCounts, totalUsers } = data.stats;
+        animateCounter('statTotal', totalMenuItems);
+        animateCounter('statAvailable', availableItems);
+        animateCounter('statCategories', categoryCounts.length);
+        animateCounter('statUsers', totalUsers);
     }
 }
 
-// ── Counter animation ──
 function animateCounter(elId, target) {
     const el = document.getElementById(elId);
     if (!el) return;
@@ -116,25 +87,19 @@ function animateCounter(elId, target) {
     }, 30);
 }
 
-// ── Load Menu Items ──
-async function loadMenuItems() {
-    try {
-        const res = await authFetch(`${API_BASE}/api/menu`);
-        const data = await res.json();
-
-        if (!data.success) throw new Error(data.message);
-
-        menuItems = data.data;
-        renderTable();
-    } catch (err) {
+function loadMenuItems() {
+    const data = MockAPI.getAllMenu();
+    if (!data.success) {
         document.getElementById('menuTableBody').innerHTML = `
       <tr><td colspan="6">
         <div class="table-empty"><div class="icon">⚠️</div><p>Failed to load menu items.</p></div>
       </td></tr>`;
+        return;
     }
+    menuItems = data.data;
+    renderTable();
 }
 
-// ── Render Table ──
 function renderTable() {
     const tbody = document.getElementById('menuTableBody');
 
@@ -191,7 +156,6 @@ function renderTable() {
   `).join('');
 }
 
-// ── Modal Helpers ──
 function openModal(id) {
     document.getElementById(id).classList.add('open');
 }
@@ -200,14 +164,12 @@ function closeModal(id) {
     document.getElementById(id).classList.remove('open');
 }
 
-// Close on overlay click
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
     overlay.addEventListener('click', (e) => {
         if (e.target === overlay) overlay.classList.remove('open');
     });
 });
 
-// ── Open Add Modal ──
 function openAddModal() {
     editingId = null;
     document.getElementById('modalTitle').textContent = 'Add New Item';
@@ -218,7 +180,6 @@ function openAddModal() {
     openModal('itemModal');
 }
 
-// ── Open Edit Modal ──
 function openEditModal(id) {
     const item = menuItems.find(i => i._id === id);
     if (!item) return;
@@ -237,7 +198,6 @@ function openEditModal(id) {
     openModal('itemModal');
 }
 
-// ── Handle Item Submit (Add / Edit) ──
 async function handleItemSubmit(e) {
     e.preventDefault();
 
@@ -256,35 +216,22 @@ async function handleItemSubmit(e) {
     submitBtn.disabled = true;
     submitBtn.textContent = isEdit ? 'Saving...' : 'Adding...';
 
-    try {
-        const url = isEdit ? `${API_BASE}/api/menu/${editingId}` : `${API_BASE}/api/menu`;
-        const method = isEdit ? 'PUT' : 'POST';
+    const data = isEdit
+        ? MockAPI.updateItem(editingId, payload)
+        : MockAPI.addItem(payload);
 
-        const res = await authFetch(url, {
-            method,
-            body: JSON.stringify(payload)
-        });
-
-        if (res.status === 401) { handleLogout(); return; }
-
-        const data = await res.json();
-
-        if (data.success) {
-            showToast(isEdit ? '✅ Item updated!' : '✅ Item added!', 'success');
-            closeModal('itemModal');
-            await loadDashboardData();
-        } else {
-            showToast(data.message || 'Operation failed.', 'error');
-        }
-    } catch (err) {
-        showToast('Network error. Please try again.', 'error');
+    if (data.success) {
+        showToast(isEdit ? '✅ Item updated!' : '✅ Item added!', 'success');
+        closeModal('itemModal');
+        loadDashboardData();
+    } else {
+        showToast(data.message || 'Operation failed.', 'error');
     }
 
     submitBtn.disabled = false;
     submitBtn.textContent = isEdit ? 'Save Changes' : 'Add Item';
 }
 
-// ── Open Delete Modal ──
 function openDeleteModal(id, name) {
     deletingId = id;
     document.getElementById('deleteItemName').textContent =
@@ -294,7 +241,6 @@ function openDeleteModal(id, name) {
     openModal('deleteModal');
 }
 
-// ── Confirm Delete ──
 async function confirmDelete() {
     if (!deletingId) return;
 
@@ -302,21 +248,14 @@ async function confirmDelete() {
     btn.textContent = 'Deleting...';
     btn.disabled = true;
 
-    try {
-        const res = await authFetch(`${API_BASE}/api/menu/${deletingId}`, { method: 'DELETE' });
-        if (res.status === 401) { handleLogout(); return; }
+    const data = MockAPI.deleteItem(deletingId);
 
-        const data = await res.json();
-
-        if (data.success) {
-            showToast('🗑️ Item deleted.', 'success');
-            closeModal('deleteModal');
-            await loadDashboardData();
-        } else {
-            showToast(data.message || 'Delete failed.', 'error');
-        }
-    } catch (err) {
-        showToast('Network error.', 'error');
+    if (data.success) {
+        showToast('🗑️ Item deleted.', 'success');
+        closeModal('deleteModal');
+        loadDashboardData();
+    } else {
+        showToast(data.message || 'Delete failed.', 'error');
     }
 
     btn.textContent = 'Delete';
