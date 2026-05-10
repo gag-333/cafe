@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Cafe – Premium Coffee & Desserts</title>
+  <meta name="description"
+    content="Experience the finest coffee, desserts and drinks at Web Cafe. A cozy online cafe serving premium quality beverages and treats." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/cart.css" />
+  <style>
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding-top: 72px;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(200, 131, 60, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 80% 80%, rgba(200, 131, 60, 0.08) 0%, transparent 50%);
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200, 131, 60, 0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(200, 131, 60, 0.12);
+      border: 1px solid rgba(200, 131, 60, 0.3);
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--primary-light);
+      letter-spacing: 0.5px;
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(0.8);
+      }
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.7s ease 0.1s both;
+    }
+
+    .hero-title .highlight {
+      background: linear-gradient(135deg, var(--accent), var(--primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+      max-width: 480px;
+      animation: fadeInUp 0.8s ease 0.2s both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.9s ease 0.3s both;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-light);
+      animation: fadeInUp 1s ease 0.4s both;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-top: 0.2rem;
+    }
+
+    .hero-visual {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeInRight 1s ease 0.3s both;
+    }
+
+    .hero-img-frame {
+      position: relative;
+      width: 420px;
+      height: 480px;
+      border-radius: 200px 200px 160px 160px;
+      overflow: hidden;
+      border: 2px solid var(--border);
+    }
+
+    .hero-img-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-float-card {
+      position: absolute;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow);
+      animation: floatCard 4s ease-in-out infinite;
+    }
+
+    .hero-float-card.card-1 {
+      top: 60px;
+      left: -40px;
+      animation-delay: 0s;
+    }
+
+    .hero-float-card.card-2 {
+      bottom: 80px;
+      right: -40px;
+      animation-delay: 2s;
+    }
+
+    @keyframes floatCard {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    .float-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .float-info strong {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .float-info span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .hero-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(200, 131, 60, 0.12);
+    }
+
+    .ring-1 {
+      width: 520px;
+      height: 520px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: ring-spin 20s linear infinite;
+    }
+
+    .ring-2 {
+      width: 640px;
+      height: 640px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: ring-spin 30s linear infinite reverse;
+    }
+
+    @keyframes ring-spin {
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    /* ── Features ── */
+    .features {
+      padding: 8rem 0;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(200, 131, 60, 0.04), transparent);
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-gold);
+    }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: rgba(200, 131, 60, 0.12);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.6rem;
+      color: var(--text-primary);
+    }
+
+    .feature-card p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ── Featured Menu ── */
+    .featured-menu {
+      padding: 6rem 0;
+      background: rgba(26, 16, 8, 0.5);
+    }
+
+    /* ── Testimonials ── */
+    .testimonials {
+      padding: 8rem 0;
+    }
+
+    .testimonial-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+    }
+
+    .stars {
+      color: var(--accent);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .testimonial-text {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .author-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .author-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .author-role {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* ── CTA Section ── */
+    .cta-section {
+      padding: 8rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(200, 131, 60, 0.1) 0%, transparent 70%);
+    }
+
+    .cta-section .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-title {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-desc {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      max-width: 500px;
+      margin: 0 auto 2.5rem;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInRight {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .hero-visual {
+        display: none;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+
+      .hero-stats {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Loader -->
+  <div class="loader-overlay" id="pageLoader">
+    <div class="coffee-loader">
+      <div class="coffee-steam">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="coffee-cup">
+        <div class="coffee-fill"></div>
+      </div>
+    </div>
+    <p class="loader-text">Web Cafe</p>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <a href="/" class="nav-logo">
+      <div class="nav-logo-icon">☕</div>
+      Web<span>Cafe</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/" class="active">Home</a></li>
+      <li><a href="/menu">Menu</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/contact">Contact</a></li>
+
+    </ul>
+    <div class="nav-cart" onclick="toggleCart()">
+      🛒 <span class="cart-badge" id="cartBadge">0</span>
+    </div>
+    <div class="hamburger" id="hamburger" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          Now Serving Premium Coffees
+        </div>
+        <h1 class="hero-title">
+          Where Every<br />Sip Tells a<br /><span class="highlight">Story</span>
+        </h1>
+        <p class="hero-desc">
+          Step into a world of carefully crafted beverages and irresistible desserts. From single-origin espressos to
+          artisan cheesecakes — we pour our heart into every cup.
+        </p>
+        <div class="hero-actions">
+          <a href="/menu" class="btn btn-primary btn-lg">Explore Menu ☕</a>
+          <a href="/about" class="btn btn-outline btn-lg">Our Story</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-num">50+</span>
+            <span class="stat-label">Menu Items</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">4.9★</span>
+            <span class="stat-label">Rating</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">2K+</span>
+            <span class="stat-label">Happy Guests</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-ring ring-1"></div>
+        <div class="hero-ring ring-2"></div>
+        <div class="hero-img-frame">
+          <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80" alt="Premium Coffee" />
+        </div>
+        <div class="hero-float-card card-1">
+          <div class="float-icon">⭐</div>
+          <div class="float-info">
+            <strong>Top Rated</strong>
+            <span>4.9 / 5 stars</span>
+          </div>
+        </div>
+        <div class="hero-float-card card-2">
+          <div class="float-icon">☕</div>
+          <div class="float-info">
+            <strong>Fresh Brewed</strong>
+            <span>Every morning</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Why Choose Us</span>
+        <h2 class="section-title">Crafted with <span>Passion</span></h2>
+        <p class="section-subtitle">We believe great coffee is an art form. Here's what makes us different.</p>
+      </div>
+      <div class="grid grid-4">
+        <div class="feature-card">
+          <div class="feature-icon">🌿</div>
+          <h3>100% Organic</h3>
+          <p>Ethically sourced beans from certified organic farms around the world.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">👨‍🍳</div>
+          <h3>Expert Baristas</h3>
+          <p>Our master baristas bring years of craft expertise to every single cup.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Perfect Roast</h3>
+          <p>Small-batch roasted in-house for peak flavor at every step of the process.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💫</div>
+          <h3>Cozy Atmosphere</h3>
+          <p>A warm, welcoming space designed to make you feel right at home.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Menu Section -->
+  <section class="featured-menu">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Our Favourites</span>
+        <h2 class="section-title">Featured <span>Menu</span></h2>
+        <p class="section-subtitle">A taste of what awaits you. Our most loved items, freshly prepared.</p>
+      </div>
+      <div class="grid grid-4" id="featuredItems">
+        <!-- Dynamically loaded -->
+        <div class="empty-state">
+          <div class="empty-state-icon">☕</div>
+          <p>Loading menu...</p>
+        </div>
+      </div>
+      <div class="text-center mt-5">
+        <a href="/menu" class="btn btn-primary btn-lg">View Full Menu →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Guest Reviews</span>
+        <h2 class="section-title">What People <span>Say</span></h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"Best coffee I've ever had! The caramel latte is absolutely divine. The ambiance
+            is perfect for working or relaxing."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">S</div>
+            <div>
+              <div class="author-name">Sofia M.</div>
+              <div class="author-role">Regular Customer</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"The tiramisu here is something else. Pair it with their cold brew and you have
+            the perfect afternoon. Highly recommend!"</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">A</div>
+            <div>
+              <div class="author-name">Alex K.</div>
+              <div class="author-role">Food Blogger</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"An exceptional experience every single time. The staff is warm, the coffee is
+            flawless, and the desserts are dreamy."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">L</div>
+            <div>
+              <div class="author-name">Lena R.</div>
+              <div class="author-role">Local Guide</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <span class="section-label">Ready to Visit?</span>
+      <h2 class="cta-title">Start Your <span style="color:var(--primary-light)">Coffee Journey</span> Today</h2>
+      <p class="cta-desc">Browse our full menu and discover your new favourite brew. We can't wait to serve you.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="/menu" class="btn btn-primary btn-lg">Browse Menu ☕</a>
+        <a href="/contact" class="btn btn-outline btn-lg">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="nav-logo" style="margin-bottom:0.5rem;">
+          <div class="nav-logo-icon">☕</div>
+          Web<span>Cafe</span>
+        </a>
+        <p>A cozy corner of the internet where every sip is a story. Quality coffee, artisan desserts, and a warm
+          welcome await you.</p>
+        <div class="footer-social">
+          <a href="#" class="social-link" aria-label="Instagram">📸</a>
+          <a href="#" class="social-link" aria-label="Facebook">📘</a>
+          <a href="#" class="social-link" aria-label="Twitter">🐦</a>
+          <a href="#" class="social-link" aria-label="TikTok">🎵</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Pages</h4>
+        <ul class="footer-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/menu">Menu</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Menu</h4>
+        <ul class="footer-links">
+          <li><a href="/menu">Coffee</a></li>
+          <li><a href="/menu">Desserts</a></li>
+          <li><a href="/menu">Drinks</a></li>
+          <li><a href="/menu">Snacks</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Info</h4>
+        <ul class="footer-links">
+          <li><a href="#">Mon–Fri: 7am–9pm</a></li>
+          <li><a href="#">Sat–Sun: 8am–10pm</a></li>
+          <li><a href="mailto:hello@webcafe.com">hello@webcafe.com</a></li>
+          <li><a href="tel:+15005550100">+1 500 555 0100</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 WebCafe. All rights reserved.</p>
+      <p>Made with ☕ and ❤️</p>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/cart.js"></script>
+  <script>
+    // Load featured menu items
+    async function loadFeatured() {
+      try {
+        const res = await fetch('/api/menu');
+        const data = await res.json();
+        const container = document.getElementById('featuredItems');
+        if (!data.success || data.data.length === 0) {
+          container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">☕</div><p>Menu coming soon!</p></div>';
+          return;
+        }
+        const items = data.data.slice(0, 4);
+        container.innerHTML = items.map(item => createMenuCard(item)).join('');
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function createMenuCard(item) {
+      const badgeClass = `badge-${item.category.toLowerCase()}`;
+      const imgSrc = item.image || 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400';
+      return `
+      <div class="menu-card">
+        <div class="menu-card-img-wrapper">
+          <img class="menu-card-img" src="${imgSrc}" alt="${item.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400'"/>
+          <span class="menu-card-badge ${badgeClass}">${item.category}</span>
+        </div>
+        <div class="menu-card-body">
+          <h3 class="menu-card-title">${item.name}</h3>
+          <p class="menu-card-desc">${item.description}</p>
+          <div class="menu-card-footer">
+            <span class="menu-card-price">$${parseFloat(item.price).toFixed(2)}</span>
+            <button class="btn btn-outline btn-sm" onclick="addToCart('${item._id}', '${item.name.replace(/'/g, "\\'")}', ${item.price}, '${imgSrc}')">Add to Cart</button>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    loadFeatured();
+  </script>
+</body>
+
+</html>

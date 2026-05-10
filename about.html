@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us – Web Cafe</title>
+    <meta name="description"
+        content="Learn the story behind Web Cafe. Our mission, values, and the team that makes it all happen." />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/cart.css" />
+    <style>
+        .about-hero {
+            padding: 9rem 0 5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(200, 131, 60, 0.12) 0%, transparent 70%);
+        }
+
+        .about-hero .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── Story Section ── */
+        .story-section {
+            padding: 6rem 0;
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .story-img-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .story-img-grid img {
+            border-radius: var(--radius);
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .story-img-grid img:first-child {
+            grid-column: span 2;
+            height: 280px;
+        }
+
+        .story-img-grid img:hover {
+            transform: scale(1.02);
+        }
+
+        .story-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .story-text p {
+            color: var(--text-secondary);
+            font-size: 0.97rem;
+            line-height: 1.8;
+            margin-bottom: 1.2rem;
+        }
+
+        /* ── Values ── */
+        .values-section {
+            padding: 6rem 0;
+            background: rgba(26, 16, 8, 0.5);
+        }
+
+        .value-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .value-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .value-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .value-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .value-card p {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.7;
+        }
+
+        /* ── Team ── */
+        .team-section {
+            padding: 6rem 0;
+        }
+
+        .team-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .team-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .team-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .team-body {
+            padding: 1.5rem 1rem;
+        }
+
+        .team-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .team-role {
+            font-size: 0.82rem;
+            color: var(--primary-light);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 600;
+        }
+
+        .team-bio {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.75rem;
+            line-height: 1.6;
+        }
+
+        /* ── Timeline ── */
+        .timeline-section {
+            padding: 6rem 0;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary), var(--primary-dark), transparent);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            grid-column: 1;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-dot {
+            grid-column: 2;
+            order: -1;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            grid-column: 2;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid var(--bg-dark);
+            box-shadow: 0 0 0 3px rgba(200, 131, 60, 0.3);
+        }
+
+        .timeline-year {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .timeline-content h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .timeline-content p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .story-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                padding-left: 50px;
+            }
+
+            .timeline-dot {
+                left: 20px;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-content {
+                grid-column: 1;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Loader -->
+    <div class="loader-overlay" id="pageLoader">
+        <div class="coffee-loader">
+            <div class="coffee-steam"><span></span><span></span><span></span></div>
+            <div class="coffee-cup">
+                <div class="coffee-fill"></div>
+            </div>
+        </div>
+        <p class="loader-text">Web Cafe</p>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <a href="/" class="nav-logo">
+            <div class="nav-logo-icon">☕</div>Web<span>Cafe</span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="/">Home</a></li>
+            <li><a href="/menu">Menu</a></li>
+            <li><a href="/about" class="active">About</a></li>
+            <li><a href="/contact">Contact</a></li>
+        </ul>
+        <div class="nav-cart" onclick="toggleCart()">
+            🛒 <span class="cart-badge" id="cartBadge">0</span>
+        </div>
+        <div class="hamburger" id="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="about-hero">
+        <div class="container">
+            <span class="section-label">Our Story</span>
+            <h1 class="section-title" style="margin-top:0.75rem;">About <span>Web Cafe</span></h1>
+            <p class="section-subtitle">A story brewed with passion, poured with love, and served with a smile since
+                2018.</p>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="story-section">
+        <div class="container">
+            <div class="story-grid">
+                <div class="story-img-grid">
+                    <img src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=800&q=80"
+                        alt="Cafe Interior" />
+                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=80"
+                        alt="Coffee Art" />
+                    <img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&q=80" alt="Desserts" />
+                </div>
+                <div class="story-text">
+                    <span class="section-label">The Beginning</span>
+                    <h2>Born from a <span style="color:var(--primary-light)">Love of Coffee</span></h2>
+                    <p>Web Cafe was born in 2018 from a simple belief: that great coffee can change your entire day. Our
+                        founder, Maria, started with a small espresso cart and a dream to create a space where people
+                        could slow down and savour the moment.</p>
+                    <p>Today, we've grown into a beloved destination for coffee lovers and dessert enthusiasts alike.
+                        Our menu is a carefully curated collection of recipes perfected over years of passion and
+                        countless cups.</p>
+                    <p>We source our beans directly from small-scale farmers in Ethiopia, Colombia, and Guatemala —
+                        building relationships that ensure quality from seed to cup.</p>
+                    <div style="display:flex;gap:2rem;margin-top:2rem;">
+                        <div>
+                            <div
+                                style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--accent);font-weight:700;">
+                                6+</div>
+                            <div style="font-size:0.82rem;color:var(--text-muted);">Years of Service</div>
+                        </div>
+                        <div>
+                            <div
+                                style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--accent);font-weight:700;">
+                                2K+</div>
+                            <div style="font-size:0.82rem;color:var(--text-muted);">Happy Customers</div>
+                        </div>
+                        <div>
+                            <div
+                                style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--accent);font-weight:700;">
+                                50+</div>
+                            <div style="font-size:0.82rem;color:var(--text-muted);">Menu Items</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission & Values -->
+    <section class="values-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">What We Stand For</span>
+                <h2 class="section-title">Our <span>Values</span></h2>
+            </div>
+            <div class="grid grid-3">
+                <div class="value-card">
+                    <div class="value-icon">🌱</div>
+                    <h3>Sustainability</h3>
+                    <p>We partner with eco-conscious farms and use biodegradable packaging to minimize our environmental
+                        footprint.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🎨</div>
+                    <h3>Craftsmanship</h3>
+                    <p>Every drink is a work of art. Our baristas undergo months of training to deliver a flawless
+                        experience every time.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🤝</div>
+                    <h3>Community</h3>
+                    <p>We're proud to be part of this community. We host events, support local artists, and give back
+                        whenever we can.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">✨</div>
+                    <h3>Quality First</h3>
+                    <p>We never compromise on quality. From the finest singleorigin beans to fresh daily desserts — only
+                        the best.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">💛</div>
+                    <h3>Warm Welcome</h3>
+                    <p>Every guest is family. We believe the atmosphere is just as important as the coffee itself.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🔬</div>
+                    <h3>Innovation</h3>
+                    <p>We constantly experiment with new blends, brewing methods, and seasonal specials to keep things
+                        exciting.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team -->
+    <section class="team-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">The People</span>
+                <h2 class="section-title">Meet Our <span>Team</span></h2>
+                <p class="section-subtitle">The passionate humans behind every cup and plate.</p>
+            </div>
+            <div class="grid grid-3">
+                <div class="team-card">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" alt="Maria Chen"
+                        class="team-img" />
+                    <div class="team-body">
+                        <h3 class="team-name">Maria Chen</h3>
+                        <p class="team-role">Founder & Head Barista</p>
+                        <p class="team-bio">15 years in specialty coffee. Maria's vision turned a dream into a
+                            destination.</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80"
+                        alt="James Rivera" class="team-img" />
+                    <div class="team-body">
+                        <h3 class="team-name">James Rivera</h3>
+                        <p class="team-role">Executive Pastry Chef</p>
+                        <p class="team-bio">Trained in Paris, James crafts the desserts that keep our guests coming
+                            back.</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80"
+                        alt="Sophie Laurent" class="team-img" />
+                    <div class="team-body">
+                        <h3 class="team-name">Sophie Laurent</h3>
+                        <p class="team-role">Lead Barista</p>
+                        <p class="team-bio">World Barista Championship finalist. Sophie's latte art has to be seen to be
+                            believed.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="timeline-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Milestones</span>
+                <h2 class="section-title">Our <span>Journey</span></h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content" style="grid-column:1;text-align:right;">
+                        <div class="timeline-year">2018</div>
+                        <h4>The First Cup</h4>
+                        <p>Maria opens a small espresso cart at the local farmers market.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content" style="grid-column:2;">
+                        <div class="timeline-year">2020</div>
+                        <h4>Brick & Mortar</h4>
+                        <p>We opened our first physical location — and sold out on day one.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content" style="grid-column:1;text-align:right;">
+                        <div class="timeline-year">2022</div>
+                        <h4>Award Winning</h4>
+                        <p>Named "Best Local Cafe" by the City Eats Guide two years running.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content" style="grid-column:2;">
+                        <div class="timeline-year">2024</div>
+                        <h4>Going Digital</h4>
+                        <p>Launching our online presence to share our passion with the world.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="/" class="nav-logo">
+                    <div class="nav-logo-icon">☕</div>Web<span>Cafe</span>
+                </a>
+                <p>Quality coffee, artisan desserts, and a warm welcome await you.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-link">📸</a>
+                    <a href="#" class="social-link">📘</a>
+                    <a href="#" class="social-link">🐦</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Pages</h4>
+                <ul class="footer-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/menu">Menu</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Menu</h4>
+                <ul class="footer-links">
+                    <li><a href="/menu">Coffee</a></li>
+                    <li><a href="/menu">Desserts</a></li>
+                    <li><a href="/menu">Drinks</a></li>
+                    <li><a href="/menu">Snacks</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Hours</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Mon–Fri: 7am–9pm</a></li>
+                    <li><a href="#">Sat–Sun: 8am–10pm</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 WebCafe. All rights reserved.</p>
+            <p>Made with ☕ and ❤️</p>
+        </div>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/cart.js"></script>
+</body>
+
+</html>

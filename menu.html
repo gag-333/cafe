@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu – Web Cafe</title>
+    <meta name="description"
+        content="Explore the full Web Cafe menu. Premium coffees, artisan desserts, refreshing drinks, and tasty snacks." />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/cart.css" />
+    <style>
+        .menu-page {
+            padding: 7rem 0 5rem;
+        }
+
+        .menu-hero {
+            text-align: center;
+            padding: 6rem 0 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(200, 131, 60, 0.12) 0%, transparent 70%);
+        }
+
+        .menu-hero .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── Filter Tabs ── */
+        .filter-tabs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 9px 22px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-tab:hover {
+            border-color: var(--primary);
+            color: var(--primary-light);
+        }
+
+        .filter-tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(200, 131, 60, 0.35);
+        }
+
+        /* ── Search ── */
+        .search-bar {
+            max-width: 400px;
+            margin: 0 auto 3rem;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 13px 20px 13px 50px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(200, 131, 60, 0.1);
+        }
+
+        .search-bar input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+            pointer-events: none;
+        }
+
+        /* ── Menu Grid ── */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 1.75rem;
+        }
+
+        .menu-count {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .menu-count span {
+            color: var(--primary-light);
+            font-weight: 600;
+        }
+
+        /* ── Skeleton ── */
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg-card) 25%, rgba(200, 131, 60, 0.05) 50%, var(--bg-card) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: var(--radius-sm);
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .skeleton-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .skeleton-img {
+            height: 200px;
+        }
+
+        .skeleton-body {
+            padding: 1.25rem;
+        }
+
+        .skeleton-line {
+            height: 14px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .skeleton-line.short {
+            width: 50%;
+        }
+
+        .skeleton-line.medium {
+            width: 75%;
+        }
+
+        @media (max-width: 600px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Loader -->
+    <div class="loader-overlay" id="pageLoader">
+        <div class="coffee-loader">
+            <div class="coffee-steam"><span></span><span></span><span></span></div>
+            <div class="coffee-cup">
+                <div class="coffee-fill"></div>
+            </div>
+        </div>
+        <p class="loader-text">Web Cafe</p>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <a href="/" class="nav-logo">
+            <div class="nav-logo-icon">☕</div>
+            Web<span>Cafe</span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="/">Home</a></li>
+            <li><a href="/menu" class="active">Menu</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
+        </ul>
+        <div class="nav-cart" onclick="toggleCart()">
+            🛒 <span class="cart-badge" id="cartBadge">0</span>
+        </div>
+        <div class="hamburger" id="hamburger" onclick="toggleNav()">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- Menu Hero -->
+    <section class="menu-hero">
+        <div class="container">
+            <span class="section-label">Our Full Collection</span>
+            <h1 class="section-title" style="margin-top:0.75rem;">Explore Our <span>Menu</span></h1>
+            <p class="section-subtitle">From rich espressos to decadent desserts — find your perfect match.</p>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu-page">
+        <div class="container">
+
+            <!-- Search -->
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Search menu items..." oninput="filterItems()" />
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="filter-tabs">
+                <button class="filter-tab active" onclick="setCategory('all', this)" id="tab-all">
+                    🍽️ All Items
+                </button>
+                <button class="filter-tab" onclick="setCategory('Coffee', this)">☕ Coffee</button>
+                <button class="filter-tab" onclick="setCategory('Desserts', this)">🍰 Desserts</button>
+                <button class="filter-tab" onclick="setCategory('Drinks', this)">🧋 Drinks</button>
+                <button class="filter-tab" onclick="setCategory('Snacks', this)">🥐 Snacks</button>
+                <button class="filter-tab" onclick="setCategory('Specials', this)">⭐ Specials</button>
+            </div>
+
+            <!-- Count -->
+            <p class="menu-count" id="menuCount"></p>
+
+            <!-- Grid -->
+            <div class="menu-grid" id="menuGrid">
+                <!-- Skeletons -->
+                ${Array(8).fill(`
+                <div class="skeleton-card">
+                    <div class="skeleton skeleton-img"></div>
+                    <div class="skeleton-body">
+                        <div class="skeleton skeleton-line medium"></div>
+                        <div class="skeleton skeleton-line"></div>
+                        <div class="skeleton skeleton-line short"></div>
+                    </div>
+                </div>`).join('')}
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="/" class="nav-logo">
+                    <div class="nav-logo-icon">☕</div>Web<span>Cafe</span>
+                </a>
+                <p>Quality coffee, artisan desserts, and a warm welcome await you.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-link">📸</a>
+                    <a href="#" class="social-link">📘</a>
+                    <a href="#" class="social-link">🐦</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Pages</h4>
+                <ul class="footer-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/menu">Menu</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Menu</h4>
+                <ul class="footer-links">
+                    <li><a href="/menu">Coffee</a></li>
+                    <li><a href="/menu">Desserts</a></li>
+                    <li><a href="/menu">Drinks</a></li>
+                    <li><a href="/menu">Snacks</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Hours</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Mon–Fri: 7am–9pm</a></li>
+                    <li><a href="#">Sat–Sun: 8am–10pm</a></li>
+                    <li><a href="mailto:hello@webcafe.com">hello@webcafe.com</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 WebCafe. All rights reserved.</p>
+            <p>Made with ☕ and ❤️</p>
+        </div>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/menu.js"></script>
+</body>
+
+</html>

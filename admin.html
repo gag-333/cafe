@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel – Web Cafe</title>
+    <meta name="description"
+        content="Web Cafe Admin Panel – Manage your menu items, view stats, and control your cafe." />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        /* ── Login Page ── */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .login-page::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(200, 131, 60, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 40% at 70% 60%, rgba(200, 131, 60, 0.05) 0%, transparent 50%);
+        }
+
+        .login-card {
+            position: relative;
+            z-index: 1;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-logo-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+            box-shadow: 0 8px 25px rgba(200, 131, 60, 0.35);
+        }
+
+        .login-logo h1 {
+            font-size: 1.4rem;
+            color: var(--text-primary);
+        }
+
+        .login-logo p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 0.5rem;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(200, 131, 60, 0.4);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ── Admin Dashboard ── */
+        .admin-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Admin Navbar ── */
+        .admin-navbar {
+            height: 64px;
+            background: var(--bg-card2);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .admin-nav-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        .admin-nav-left .admin-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .admin-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .admin-user-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(200, 131, 60, 0.1);
+            border: 1px solid var(--border);
+            padding: 6px 14px 6px 8px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+        }
+
+        .admin-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .logout-btn {
+            padding: 7px 16px;
+            border-radius: 50px;
+            background: rgba(200, 50, 50, 0.1);
+            border: 1px solid rgba(200, 50, 50, 0.3);
+            color: #e87a7a;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover {
+            background: rgba(200, 50, 50, 0.2);
+        }
+
+        /* ── Dashboard Layout ── */
+        .dashboard {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1300px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .dashboard-title {
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-title h2 {
+            font-size: 1.8rem;
+        }
+
+        .dashboard-title p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+
+        /* ── Stats Cards ── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            border-radius: 0 var(--radius) 0 80px;
+            background: rgba(200, 131, 60, 0.06);
+        }
+
+        .stat-card-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .stat-card-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-card-label {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── Menu Management ── */
+        .management-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .management-header h3 {
+            font-size: 1.3rem;
+        }
+
+        /* ── Table ── */
+        .table-wrapper {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .admin-table th {
+            padding: 1rem 1.25rem;
+            text-align: left;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .admin-table td {
+            padding: 1rem 1.25rem;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border-light);
+            vertical-align: middle;
+        }
+
+        .admin-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .admin-table tbody tr {
+            transition: var(--transition);
+        }
+
+        .admin-table tbody tr:hover {
+            background: rgba(200, 131, 60, 0.03);
+        }
+
+        .item-img-preview {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+        }
+
+        .item-name-cell strong {
+            display: block;
+            font-size: 0.93rem;
+        }
+
+        .item-name-cell span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .price-cell {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-edit,
+        .btn-delete {
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid;
+            transition: var(--transition);
+        }
+
+        .btn-edit {
+            background: rgba(200, 131, 60, 0.1);
+            border-color: rgba(200, 131, 60, 0.3);
+            color: var(--primary-light);
+        }
+
+        .btn-edit:hover {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        .btn-delete {
+            background: rgba(200, 50, 50, 0.1);
+            border-color: rgba(200, 50, 50, 0.3);
+            color: #e87a7a;
+        }
+
+        .btn-delete:hover {
+            background: #c83232;
+            color: #fff;
+            border-color: #c83232;
+        }
+
+        /* ── Modal ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(6px);
+            z-index: 5000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background: var(--bg-card2);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.95);
+            transition: var(--transition);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+        }
+
+        .modal-overlay.open .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .modal-header h3 {
+            font-size: 1.3rem;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: rgba(200, 50, 50, 0.15);
+            color: #e87a7a;
+            border-color: rgba(200, 50, 50, 0.3);
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .modal-footer .btn {
+            flex: 1;
+        }
+
+        /* ── Delete confirm ── */
+        .delete-modal {
+            text-align: center;
+        }
+
+        .delete-modal .warn-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .delete-modal h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .delete-modal p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #c83232, #a01a1a);
+            color: #fff;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(200, 50, 50, 0.4);
+        }
+
+        /* ── Empty table ── */
+        .table-empty {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-muted);
+        }
+
+        .table-empty .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ===== LOGIN PAGE ===== -->
+    <div id="loginPage">
+        <div class="login-page">
+            <div class="login-card">
+                <div class="login-logo">
+                    <div class="login-logo-icon">☕</div>
+                    <h1>Admin Panel</h1>
+                    <p>Sign in to manage your Web Cafe</p>
+                </div>
+
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label class="form-label" for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" class="form-control" placeholder="admin@webcafe.com"
+                            required />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" class="form-control" placeholder="••••••••"
+                            required />
+                    </div>
+                    <button type="submit" class="login-btn" id="loginBtn">
+                        <span id="loginBtnText">Sign In → </span>
+                    </button>
+                </form>
+
+                <p style="text-align:center;margin-top:1.5rem;font-size:0.82rem;color:var(--text-muted);">
+                    Superuser access only. Unauthorized attempts are logged.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== DASHBOARD PAGE ===== -->
+    <div id="dashboardPage" style="display:none;">
+        <div class="admin-wrapper">
+
+            <!-- Admin Navbar -->
+            <nav class="admin-navbar">
+                <div class="admin-nav-left">
+                    <div class="admin-icon">☕</div>
+                    WebCafe Admin
+                </div>
+                <div class="admin-nav-right">
+                    <div class="admin-user-badge">
+                        <div class="admin-avatar" id="adminInitial">A</div>
+                        <span id="adminName">Admin</span>
+                    </div>
+                    <button class="logout-btn" onclick="handleLogout()">Logout</button>
+                </div>
+            </nav>
+
+            <!-- Dashboard -->
+            <div class="dashboard">
+                <div class="dashboard-title">
+                    <h2>Dashboard Overview</h2>
+                    <p>Manage your cafe menu and track statistics.</p>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-icon">☕</div>
+                        <div class="stat-card-value" id="statTotal">–</div>
+                        <div class="stat-card-label">Total Items</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon">✅</div>
+                        <div class="stat-card-value" id="statAvailable">–</div>
+                        <div class="stat-card-label">Available</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon">🏷️</div>
+                        <div class="stat-card-value" id="statCategories">–</div>
+                        <div class="stat-card-label">Categories</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon">👤</div>
+                        <div class="stat-card-value" id="statUsers">–</div>
+                        <div class="stat-card-label">Admin Users</div>
+                    </div>
+                </div>
+
+                <!-- Menu Management -->
+                <div class="management-header">
+                    <h3>Menu Items</h3>
+                    <button class="btn btn-primary" id="addItemBtn" onclick="openAddModal()">+ Add New Item</button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Item</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="menuTableBody">
+                            <tr>
+                                <td colspan="6">
+                                    <div class="table-empty">
+                                        <div class="icon">☕</div>
+                                        <p>Loading menu items...</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ADD/EDIT MODAL ===== -->
+    <div class="modal-overlay" id="itemModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add New Item</h3>
+                <button class="modal-close" onclick="closeModal('itemModal')">✕</button>
+            </div>
+
+            <form id="itemForm" onsubmit="handleItemSubmit(event)">
+                <input type="hidden" id="editItemId" />
+                <div class="form-group">
+                    <label class="form-label" for="itemName">Item Name *</label>
+                    <input type="text" id="itemName" class="form-control" placeholder="e.g. Caramel Latte" required />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="itemDescription">Description *</label>
+                    <textarea id="itemDescription" class="form-control" rows="3"
+                        placeholder="Short, appetizing description..." required></textarea>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+                    <div class="form-group">
+                        <label class="form-label" for="itemPrice">Price ($) *</label>
+                        <input type="number" id="itemPrice" class="form-control" placeholder="4.50" step="0.01" min="0"
+                            required />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="itemCategory">Category *</label>
+                        <select id="itemCategory" class="form-control" required>
+                            <option value="">Select category</option>
+                            <option value="Coffee">☕ Coffee</option>
+                            <option value="Desserts">🍰 Desserts</option>
+                            <option value="Drinks">🧋 Drinks</option>
+                            <option value="Snacks">🥐 Snacks</option>
+                            <option value="Specials">⭐ Specials</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="itemImage">Image URL</label>
+                    <input type="url" id="itemImage" class="form-control" placeholder="https://..." />
+                </div>
+                <div class="form-group">
+                    <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+                        <input type="checkbox" id="itemAvailable" checked
+                            style="width:16px;height:16px;accent-color:var(--primary);" />
+                        <span style="font-size:0.9rem;color:var(--text-secondary);">Item is available</span>
+                    </label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('itemModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="itemSubmitBtn">Add Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== DELETE CONFIRM MODAL ===== -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal" style="max-width:400px;">
+            <div class="delete-modal">
+                <div class="warn-icon">⚠️</div>
+                <h3>Delete Item?</h3>
+                <p id="deleteItemName">This action cannot be undone. The menu item will be permanently removed.</p>
+                <div style="display:flex;gap:1rem;justify-content:center;">
+                    <button class="btn btn-outline" onclick="closeModal('deleteModal')">Cancel</button>
+                    <button class="btn-danger" id="confirmDeleteBtn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>
